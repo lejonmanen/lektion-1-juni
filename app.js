@@ -5,6 +5,7 @@ import express from 'express'
 import cors from 'cors'
 import validateBooksRoute from './middleware/validateBooks.js'
 import { validateBody as validateApiKey } from './middleware/validateApiKey.js'
+import { accessControl } from './middleware/accessControl.js'
 import booksRouter from './routes/books.js'
 import registerRouter from './routes/register.js'
 
@@ -23,12 +24,15 @@ app.use((req, res, next) => {
 // Serva innehållet i public-mappen (statiska filer)
 app.use( express.static('public') )
 
-app.use( '/api/books', validateBooksRoute )
-app.use( '/api/books', booksRouter )
-
 //  POST /register
 app.use( '/api/register', validateApiKey )
 app.use( '/api/register', registerRouter )
+
+app.use( '/api', accessControl )
+// accessControl stoppar request till /api/books om man inte har API-nyckel
+
+app.use( '/api/books', validateBooksRoute )
+app.use( '/api/books', booksRouter )
 
 
 // /api/customers/:customerid/orders/:orderid

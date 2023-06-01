@@ -5,10 +5,10 @@ function validateBooksRoute(req, res, next) {
 	// Om id motsvarar en bok som inte finns: status 404
 	// Om id är felaktigt: status 400
 	console.log('Validate books route')
-	console.log('request url:', req.url, req.params)
-	if( req.method === 'GET' && req.url.length > 1 ) {
+	console.log('request url:', req.path, req.params)
+	if (req.method === 'GET' && req.path.length > 1 ) {
 		console.log('Vi har en URL-parameter');
-		let id = req.url.substring(1)  // hoppa över snedstreck
+		let id = req.path.substring(1)  // hoppa över snedstreck
 		if( idIsValid(id) ) {
 			next()
 		} else {

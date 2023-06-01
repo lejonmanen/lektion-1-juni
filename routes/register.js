@@ -1,4 +1,5 @@
 import express from 'express'
+import { addNewUser } from '../database/utils.js'
 
 const router = express.Router()
 
@@ -21,12 +22,11 @@ router.post('/', (req, res) => {
 	// Om man använder NeDB (eller MongoDB) så skapas ett ID när man lägger till ett dokument
 	let doc = { email }  // lägg till denna i databasen
 	let key = generatefakeApiKey()
-	users.push({ email, key, requestCount: 0 })
-
+	addNewUser(email, key)
+	
 	res.send({ key: key })
 })
 
-let users = []
 
 
 function generatefakeApiKey() {
