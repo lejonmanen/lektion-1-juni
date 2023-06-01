@@ -4,7 +4,9 @@ import express from 'express'
 //const express = require('express')
 import cors from 'cors'
 import validateBooksRoute from './middleware/validateBooks.js'
+import { validateBody as validateApiKey } from './middleware/validateApiKey.js'
 import booksRouter from './routes/books.js'
+import registerRouter from './routes/register.js'
 
 const app = express()
 const port = 1337
@@ -12,6 +14,7 @@ const port = 1337
 
 // Middleware
 app.use( cors() )
+app.use( express.json() )
 app.use((req, res, next) => {
 	// Logger - skriver ut information om alla inkommande request
 	console.log(`${req.method}  ${req.url}`, req.body)
@@ -22,6 +25,13 @@ app.use( express.static('public') )
 
 app.use( '/api/books', validateBooksRoute )
 app.use( '/api/books', booksRouter )
+
+//  POST /register
+app.use( '/api/register', validateApiKey )
+app.use( '/api/register', registerRouter )
+
+
+// /api/customers/:customerid/orders/:orderid
 
 // Route handlers
 // app.get('/', (req, res) => {
